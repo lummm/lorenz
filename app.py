@@ -8,7 +8,7 @@ from dash.dependencies import Output
 import pandas as pd
 import plotly.express as px
 
-from lorenz import simulate
+import lorenz
 
 
 # external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -49,32 +49,25 @@ def init() -> dash.Dash:
         "Amount": [4, 1, 2, 2, 4, 5],
         "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
     })
-    # df = pd.DataFrame({
-    #     "x": [1, 2, 3, 4, 5],
-    #     "y": [1, 2, 3, 4, 5],
-    #     "z": [1, 2, 3, 4, 5],
-    # })
-    df = simulate()
-    fig = px.scatter_3d(
-        df,
-        x="x", y="y", z="z",
-        color="t",
-        size_max=2,
-        opacity=0.7
-    )
-    fig["layout"] = plot_layout
     app.layout = html.Div(children=[
-        html.H1(children="Hello!"),
         html.Div(children=[
-            html.Div("Test fmk hello "),
-            dcc.Input(
-                id="my-input",
-                value="initial value",
-                type="text"),
+            html.Div(
+                u"\u03C1" + ": " + str("rho value..."),
+                style={"fontSize": "40px"}
+            ),
+            dcc.Slider(
+                id='rho-slider',
+                min=lorenz.RHO_MIN,
+                max=lorenz.RHO_MAX,
+                value=28.0,
+                step=lorenz.RHO_STEP,
+            ),
         ]),
         html.Div(id='my-output'),
-        dcc.Graph(id="example-graph",
-                  figure=fig)
+        dcc.Graph(id="graph",
+                  style={
+                      "height": "90vh",
+                  })
     ])
     return app
 
@@ -83,13 +76,34 @@ app = init()
 server = app.server
 
 
+def gen_graph(
+        rho,
+):
+    df = lorenz.simulate(
+        rho=rho,
+    )
+    fig = px.scatter_3d(
+        df,
+        x="x", y="y", z="z",
+        color="t",
+        size_max=2,
+        opacity=0.7
+    )
+    fig["layout"] = plot_layout
+    return fig
+
+
 @app.callback(
-    Output(component_id="my-output", component_property="children"),
-    [Input(component_id="my-input", component_property="value")]
+    Output('graph', 'figure'),
+    [Input(component_id="rho-slider", component_property="value")]
 )
-def update(input_value):
-    return f"Output!: {input_value}"
+def update_rho(rho):
+    print(f"rho: {rho}")
+    fig = gen_graph(rho)
+    fig.update_layout(transition_duration=500)
+    return fig
 
 
 if __name__ == '__main__':
+    print("--------- RUNNING DEV SERVER -----------")
     app.run_server(debug=True)

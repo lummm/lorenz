@@ -3,6 +3,10 @@ import pandas as pd
 from scipy.integrate import odeint
 
 
+RHO_MIN = 0.5
+RHO_MAX = 40.0
+RHO_STEP = 2.0
+
 rho = 28.0
 sigma = 10.0
 beta = 8.0 / 3.0
