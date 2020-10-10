@@ -12,6 +12,8 @@ import plotly.express as px
 import lorenz
 
 
+INPUT_WIDTH = "50px"
+
 external_stylesheets = [
     # 'https://codepen.io/chriddyp/pen/bWLwgP.css',
     "https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css",
@@ -48,9 +50,33 @@ def init() -> dash.Dash:
                     external_stylesheets=external_stylesheets
                     )
     app.layout = html.Div(children=[
+        html.Div(className="flex pb3", children=[
+            html.Div(className="w-50", children=[
+                html.Span(className="pr4",
+                          children="System A Initial Point:"),
+                dcc.Input(id="initial-x", style={"width": INPUT_WIDTH},
+                          value="1.0", type="number", step=0.1),
+                dcc.Input(id="initial-y", style={"width": INPUT_WIDTH},
+                          value="1.0",
+                          type="number", step=0.1),
+                dcc.Input(id="initial-z", style={"width": INPUT_WIDTH}
+                          , value="1.0",
+                          type="number", step=0.1),
+            ]),
+            html.Div(className="w-50", children=[
+                html.Span(className="pr4",
+                          children="System B Initial Point:"),
+                dcc.Input(style={"width": INPUT_WIDTH},
+                          value="1.0", type="number", disabled=True),
+                dcc.Input(style={"width": INPUT_WIDTH},
+                          value="1.0", type="number", disabled=True),
+                dcc.Input(style={"width": INPUT_WIDTH},
+                          value="1.0", type="number", disabled=True),
+            ]),
+        ]),
         html.Div(className="flex", children=[
             html.Div(className="w-20", children=[
-                html.Span("Show system 2"),
+                html.Span("Show system B"),
                 daq.ToggleSwitch(
                     color="#add8e6",
                     id='toggle-sys-2',
@@ -100,12 +126,13 @@ server = app.server
 def gen_graph(
         rho,
         beta,
-        show_sys_2
+        show_sys_2,
+        initial
 ):
     df = lorenz.simulate(
         rho=rho,
         beta=beta,
-        initial=[1.0, 1.0, 100.0]
+        initial=initial
     )
     df["initial"] = "1"
     if show_sys_2:
@@ -133,11 +160,15 @@ def gen_graph(
     Output('graph', 'figure'),
     [Input(component_id="rho-slider", component_property="value"),
      Input(component_id="beta-slider", component_property="value"),
-     Input(component_id="toggle-sys-2", component_property="value"),]
+     Input(component_id="toggle-sys-2", component_property="value"),
+     Input(component_id="initial-x", component_property="value"),
+     Input(component_id="initial-y", component_property="value"),
+     Input(component_id="initial-z", component_property="value"),
+     ]
 )
-def update_graph(rho, beta, show_sys_2):
+def update_graph(rho, beta, show_sys_2, x, y, z):
     print(f"rho: {rho}, beta: {beta}, toggle: {show_sys_2}")
-    return gen_graph(rho, beta, show_sys_2)
+    return gen_graph(rho, beta, show_sys_2, [x, y, z])
 
 
 if __name__ == '__main__':
