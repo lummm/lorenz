@@ -50,47 +50,59 @@ def init() -> dash.Dash:
                     external_stylesheets=external_stylesheets
                     )
     app.layout = html.Div(children=[
-        html.Div(className="flex flex-column w-50 pb3 f4", children=[
-            html.Div(className="w-100 flex", children=[
-                html.Span(className="pr4",
-                          children="System A Initial Point:"),
-                html.Span(className="nowrap", children=[
-                    dcc.Input(id="initial-x", style={"width": INPUT_WIDTH},
-                              value="1.0", type="number", step=0.1),
-                    dcc.Input(id="initial-y", style={"width": INPUT_WIDTH},
-                              value="1.0",
-                              type="number", step=0.1),
-                    dcc.Input(id="initial-z", style={"width": INPUT_WIDTH}
-                              , value="1.0",
-                              type="number", step=0.1),
+        html.Div(className="flex pb3 f4", children=[
+            html.Div(className="w-50 flex flex-column items-center", children=[
+                html.Div(className="pr4 f3 b",
+                          children="System A"),
+                html.Div(className="flex items-center", children=[
+                    html.Div("Initial point:"),
+                    html.Div(className="nowrap", children=[
+                        dcc.Input(id="initial-x", style={"width": INPUT_WIDTH},
+                                  value="1.0", type="number", step=0.1),
+                        dcc.Input(id="initial-y", style={"width": INPUT_WIDTH},
+                                  value="1.0",
+                                  type="number", step=0.1),
+                        dcc.Input(id="initial-z", style={"width": INPUT_WIDTH},
+                                  value="1.0",
+                                  type="number", step=0.1),
+                    ]),
                 ]),
             ]),
-            html.Div(className="w-100 flex", children=[
-                html.Span(className="pr4",
-                          children="System B Initial Point:"),
-                html.Span(className="nowrap", children=[
-                    dcc.Input(style={"width": INPUT_WIDTH},
-                              value="1.0", type="number", disabled=True),
-                    dcc.Input(style={"width": INPUT_WIDTH},
-                              value="1.0", type="number", disabled=True),
-                    dcc.Input(style={"width": INPUT_WIDTH},
-                              value="1.0", type="number", disabled=True),
+            html.Div(className="w-50 flex flex-column items-center", children=[
+                html.Span(className="pr4 f3 b",
+                          children="System B"),
+                html.Div(className="flex items-center", children=[
+                    html.Div("Initial point:"),
+                    html.Div(className="nowrap", children=[
+                        dcc.Input(style={"width": INPUT_WIDTH},
+                                  value="1.0", type="number", disabled=True),
+                        dcc.Input(style={"width": INPUT_WIDTH},
+                                  value="1.0", type="number", disabled=True),
+                        dcc.Input(style={"width": INPUT_WIDTH},
+                                  value="1.0", type="number", disabled=True),
+                    ]),
+                    html.Div(className="flex items-center pl2", children=[
+                        html.Span(className="pr2 f5", children="Enabled:"),
+                        daq.ToggleSwitch(
+                            color="#add8e6",
+                            id='toggle-sys-2',
+                            value=True,
+                        )
+                    ]),
                 ]),
-                html.Span(className="flex items-center pl2", children=[
-                    html.Span(className="pr2 f5", children="Enabled:"),
-                    daq.ToggleSwitch(
-                        color="#add8e6",
-                        id='toggle-sys-2',
-                        value=True,
-                    )
-                ]),
+
             ]),
         ]),
         html.Div(className="flex", children=[
-
             html.Div(className="w-40", children=[
                 html.Div(className="flex w-100 justify-center f3", children=[
-                    html.Span(u"\u03C1" + ": "),
+                    html.Span(className="b pr1", children=u"\u03C3" + ": "),
+                    html.Span("10.0")
+                ]),
+            ]),
+            html.Div(className="w-40", children=[
+                html.Div(className="flex w-100 justify-center f3", children=[
+                    html.Span(className="b pr1", children=u"\u03C1" + ": "),
                     html.Span(id="rho")
                 ]),
                 dcc.Slider(
@@ -103,7 +115,7 @@ def init() -> dash.Dash:
             ]),
             html.Div(className="w-40", children=[
                 html.Div(className="flex w-100 justify-center f4", children=[
-                    html.Span(u"\u03B2" + ": "),
+                    html.Span(className="b pr1", children=u"\u03B2" + ": "),
                     html.Span(id="beta")
                 ]),
                 dcc.Slider(
@@ -118,7 +130,7 @@ def init() -> dash.Dash:
         html.Div(id='my-output'),
         dcc.Graph(id="graph",
                   style={
-                      "height": "90vh",
+                      "height": "100vh",
                   })
     ])
     return app
