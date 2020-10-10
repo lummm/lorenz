@@ -55,7 +55,7 @@ def init() -> dash.Dash:
                       "height": "100vh",
                       "width": "80vw",
                   }),
-        html.Div(className="flex flex-column", style={"width": "20vh"}, children=[
+        html.Div(className="flex flex-column white", style={"width": "20vh", "backgroundColor": "#141414"}, children=[
             html.Div(className="pr4 f3 b", children="System A"),
             html.Div("Initial point:"),
             html.Div(className="nowrap", children=[
@@ -68,18 +68,14 @@ def init() -> dash.Dash:
                           value="1.0",
                           type="number", step=0.1),
             ]),
-            html.Div(className="pr4 f3 b flex justify-between w-100", children=[
+
+            html.Div(className="pr4 f3 b flex justify-between w-100 pt4", children=[
                 html.Div(className="nowrap", children="System B"),
                 daq.ToggleSwitch(
                     color="#add8e6",
                     id='toggle-sys-2',
                     value=True,
                 )]),
-            html.Div(className="flex items-center pl2", children=[
-                html.Span(className="pr2 f5",
-                          children="Enabled:"),
-
-            ]),
             html.Div("Initial point:"),
             html.Div(className="nowrap", children=[
                 dcc.Input(style={"width": INPUT_WIDTH},
@@ -90,7 +86,7 @@ def init() -> dash.Dash:
                           value="1.0", type="number", disabled=True),
             ]),
 
-            html.Div(className="flex f3", children=[
+            html.Div(className="flex f3 pt4", children=[
                 html.Span(className="b pr1",
                           children=u"\u03C3" + ": "),
                 html.Span("10.0")
@@ -109,7 +105,7 @@ def init() -> dash.Dash:
                 step=lorenz.RHO_STEP,
             ),
 
-            html.Div(className="flex f4", children=[
+            html.Div(className="flex f3", children=[
                 html.Span(className="b pr1",
                           children=u"\u03B2" + ": "),
                 html.Span(id="beta")
