@@ -44,84 +44,102 @@ plot_layout = {
     },
 }
 
+GRAPH = dcc.Graph(
+    id="graph",
+    style={
+        "height": "100vh",
+        "width": "80vw",
+    })
+
+BLURB = html.Div(children=[
+    html.Span(children=[
+        "These are solutions the system described by the",
+        html.Span(className="b", children="Lorenz equations:")
+    ]),
+    html.Img(src=("https://wikimedia.org/api/rest_v1/media/math/render/svg/"
+                  "7928004d58943529a7be774575a62ca436a82a7f")),
+])
+
+TOOLBAR_ITEMS = [
+    html.Div(className="pr4 f3 b", children="System A"),
+    html.Div("Initial point:"),
+    html.Div(className="nowrap", children=[
+        dcc.Input(id="initial-x", style={"width": INPUT_WIDTH},
+                  value="1.0", type="number", step=0.1),
+        dcc.Input(id="initial-y", style={"width": INPUT_WIDTH},
+                  value="1.0",
+                  type="number", step=0.1),
+        dcc.Input(id="initial-z", style={"width": INPUT_WIDTH},
+                  value="1.0",
+                  type="number", step=0.1),
+    ]),
+
+    html.Div(className="pr4 f3 b flex justify-between w-100 pt4", children=[
+        html.Div(className="nowrap", children="System B"),
+        daq.ToggleSwitch(
+            color="#add8e6",
+            id='toggle-sys-2',
+            value=True,
+        )]),
+    html.Div("Initial point:"),
+    html.Div(className="nowrap", children=[
+        dcc.Input(style={"width": INPUT_WIDTH},
+                  value="1.0", type="number", disabled=True),
+        dcc.Input(style={"width": INPUT_WIDTH},
+                  value="1.0", type="number", disabled=True),
+        dcc.Input(style={"width": INPUT_WIDTH},
+                  value="1.0", type="number", disabled=True),
+    ]),
+
+    html.Div(className="flex f3 pt4", children=[
+        html.Span(className="b pr1",
+                  children=u"\u03C3" + ": "),
+        html.Span("10.0")
+    ]),
+
+    html.Div(className="flex f3", children=[
+        html.Span(className="b pr1",
+                  children=u"\u03C1" + ": "),
+        html.Span(id="rho")
+    ]),
+    dcc.Slider(
+        id='rho-slider',
+        min=lorenz.RHO_MIN,
+        max=lorenz.RHO_MAX,
+        value=lorenz.rho,
+        step=lorenz.RHO_STEP,
+    ),
+
+    html.Div(className="flex f3", children=[
+        html.Span(className="b pr1",
+                  children=u"\u03B2" + ": "),
+        html.Span(id="beta")
+    ]),
+    dcc.Slider(
+        id='beta-slider',
+        min=lorenz.BETA_MIN,
+        max=lorenz.BETA_MAX,
+        value=lorenz.beta,
+        step=lorenz.BETA_STEP,
+    ),
+
+    BLURB,
+]
+
+LAYOUT = html.Div(className="flex", children=[
+    GRAPH,
+    html.Div(
+        className="flex flex-column white",
+        style={"width": "20vw", "backgroundColor": "#141414"},
+        children=TOOLBAR_ITEMS),
+])
+
 
 def init() -> dash.Dash:
     app = dash.Dash(__name__,
                     external_stylesheets=external_stylesheets
                     )
-    app.layout = html.Div(className="flex", children=[
-        dcc.Graph(id="graph",
-                  style={
-                      "height": "100vh",
-                      "width": "80vw",
-                  }),
-        html.Div(className="flex flex-column white", style={"width": "20vh", "backgroundColor": "#141414"}, children=[
-            html.Div(className="pr4 f3 b", children="System A"),
-            html.Div("Initial point:"),
-            html.Div(className="nowrap", children=[
-                dcc.Input(id="initial-x", style={"width": INPUT_WIDTH},
-                          value="1.0", type="number", step=0.1),
-                dcc.Input(id="initial-y", style={"width": INPUT_WIDTH},
-                          value="1.0",
-                          type="number", step=0.1),
-                dcc.Input(id="initial-z", style={"width": INPUT_WIDTH},
-                          value="1.0",
-                          type="number", step=0.1),
-            ]),
-
-            html.Div(className="pr4 f3 b flex justify-between w-100 pt4", children=[
-                html.Div(className="nowrap", children="System B"),
-                daq.ToggleSwitch(
-                    color="#add8e6",
-                    id='toggle-sys-2',
-                    value=True,
-                )]),
-            html.Div("Initial point:"),
-            html.Div(className="nowrap", children=[
-                dcc.Input(style={"width": INPUT_WIDTH},
-                          value="1.0", type="number", disabled=True),
-                dcc.Input(style={"width": INPUT_WIDTH},
-                          value="1.0", type="number", disabled=True),
-                dcc.Input(style={"width": INPUT_WIDTH},
-                          value="1.0", type="number", disabled=True),
-            ]),
-
-            html.Div(className="flex f3 pt4", children=[
-                html.Span(className="b pr1",
-                          children=u"\u03C3" + ": "),
-                html.Span("10.0")
-            ]),
-
-            html.Div(className="flex f3", children=[
-                html.Span(className="b pr1",
-                          children=u"\u03C1" + ": "),
-                html.Span(id="rho")
-            ]),
-            dcc.Slider(
-                id='rho-slider',
-                min=lorenz.RHO_MIN,
-                max=lorenz.RHO_MAX,
-                value=lorenz.rho,
-                step=lorenz.RHO_STEP,
-            ),
-
-            html.Div(className="flex f3", children=[
-                html.Span(className="b pr1",
-                          children=u"\u03B2" + ": "),
-                html.Span(id="beta")
-            ]),
-            dcc.Slider(
-                id='beta-slider',
-                min=lorenz.BETA_MIN,
-                max=lorenz.BETA_MAX,
-                value=lorenz.beta,
-                step=lorenz.BETA_STEP,
-            ),
-
-        ]),
-
-
-    ])
+    app.layout = LAYOUT
     return app
 
 
