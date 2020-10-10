@@ -53,14 +53,25 @@ def init() -> dash.Dash:
         html.Div(children=[
             html.Div(
                 u"\u03C1" + ": " + str("rho value..."),
-                style={"fontSize": "40px"}
+                style={"fontSize": "30px"}
             ),
             dcc.Slider(
                 id='rho-slider',
                 min=lorenz.RHO_MIN,
                 max=lorenz.RHO_MAX,
-                value=28.0,
+                value=lorenz.rho,
                 step=lorenz.RHO_STEP,
+            ),
+            html.Div(
+                u"\u03B2" + ": " + str("beta value..."),
+                style={"fontSize": "30px"}
+            ),
+            dcc.Slider(
+                id='beta-slider',
+                min=lorenz.BETA_MIN,
+                max=lorenz.BETA_MAX,
+                value=lorenz.beta,
+                step=lorenz.BETA_STEP,
             ),
         ]),
         html.Div(id='my-output'),
@@ -77,17 +88,27 @@ server = app.server
 
 
 def gen_graph(
-        rho,
+        rho, beta
 ):
-    df = lorenz.simulate(
+    df_1 = lorenz.simulate(
         rho=rho,
+        beta=beta,
+        initial=[1.5, 1.0, 1.1]
     )
+    df_2 = lorenz.simulate(
+        rho=rho,
+        beta=beta,
+        initial=[1.0, 1.0, 1.0]
+    )
+    df_1["initial"] = 1
+    df_2["initial"] = 2
     fig = px.scatter_3d(
-        df,
+        pd.concat((df_1, df_2)),
         x="x", y="y", z="z",
-        color="t",
-        size_max=2,
-        opacity=0.7
+        color="initial",
+        size="t",
+        size_max=15,
+        opacity=0.5,
     )
     fig["layout"] = plot_layout
     return fig
@@ -95,11 +116,12 @@ def gen_graph(
 
 @app.callback(
     Output('graph', 'figure'),
-    [Input(component_id="rho-slider", component_property="value")]
+    [Input(component_id="rho-slider", component_property="value"),
+     Input(component_id="beta-slider", component_property="value")]
 )
-def update_rho(rho):
-    print(f"rho: {rho}")
-    fig = gen_graph(rho)
+def update_rho(rho, beta):
+    print(f"rho: {rho}, beta: {beta}")
+    fig = gen_graph(rho, beta)
     fig.update_layout(transition_duration=500)
     return fig
 
