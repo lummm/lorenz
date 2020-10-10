@@ -55,89 +55,74 @@ def init() -> dash.Dash:
                       "height": "100vh",
                       "width": "80vw",
                   }),
-
-        html.Div(
-            className="flex flex-column", style={"width": "20vh"}, children=[
-                html.Div(className="w-50 flex flex-column items-center", children=[
-                    html.Div(className="pr4 f3 b",
-                             children="System A"),
-                    html.Div(className="flex items-center", children=[
-                        html.Div("Initial point:"),
-                        html.Div(className="nowrap", children=[
-                            dcc.Input(id="initial-x", style={"width": INPUT_WIDTH},
-                                      value="1.0", type="number", step=0.1),
-                            dcc.Input(id="initial-y", style={"width": INPUT_WIDTH},
-                                      value="1.0",
-                                      type="number", step=0.1),
-                            dcc.Input(id="initial-z", style={"width": INPUT_WIDTH},
-                                      value="1.0",
-                                      type="number", step=0.1),
-                        ]),
-                    ]),
-                ]),
-                html.Div(className="w-50 flex flex-column items-center", children=[
-                    html.Span(className="pr4 f3 b",
-                              children="System B"),
-                    html.Div(className="flex items-center", children=[
-                        html.Div("Initial point:"),
-                        html.Div(className="nowrap", children=[
-                            dcc.Input(style={"width": INPUT_WIDTH},
-                                      value="1.0", type="number", disabled=True),
-                            dcc.Input(style={"width": INPUT_WIDTH},
-                                      value="1.0", type="number", disabled=True),
-                            dcc.Input(style={"width": INPUT_WIDTH},
-                                      value="1.0", type="number", disabled=True),
-                        ]),
-                        html.Div(className="flex items-center pl2", children=[
-                            html.Span(className="pr2 f5",
-                                      children="Enabled:"),
-                            daq.ToggleSwitch(
-                                color="#add8e6",
-                                id='toggle-sys-2',
-                                value=True,
-                            )
-                        ]),
-                    ]),
-
-                ]),
-                html.Div(className="flex", children=[
-                    html.Div(className="w-40", children=[
-                        html.Div(className="flex w-100 justify-center f3", children=[
-                            html.Span(className="b pr1",
-                                      children=u"\u03C3" + ": "),
-                            html.Span("10.0")
-                        ]),
-                    ]),
-                    html.Div(className="w-40", children=[
-                        html.Div(className="flex w-100 justify-center f3", children=[
-                            html.Span(className="b pr1",
-                                      children=u"\u03C1" + ": "),
-                            html.Span(id="rho")
-                        ]),
-                        dcc.Slider(
-                            id='rho-slider',
-                            min=lorenz.RHO_MIN,
-                            max=lorenz.RHO_MAX,
-                            value=lorenz.rho,
-                            step=lorenz.RHO_STEP,
-                        ),
-                    ]),
-                    html.Div(className="w-40", children=[
-                        html.Div(className="flex w-100 justify-center f4", children=[
-                            html.Span(className="b pr1",
-                                      children=u"\u03B2" + ": "),
-                            html.Span(id="beta")
-                        ]),
-                        dcc.Slider(
-                            id='beta-slider',
-                            min=lorenz.BETA_MIN,
-                            max=lorenz.BETA_MAX,
-                            value=lorenz.beta,
-                            step=lorenz.BETA_STEP,
-                        )]
-                    ),
-                ]),
+        html.Div(className="flex flex-column", style={"width": "20vh"}, children=[
+            html.Div(className="pr4 f3 b", children="System A"),
+            html.Div("Initial point:"),
+            html.Div(className="nowrap", children=[
+                dcc.Input(id="initial-x", style={"width": INPUT_WIDTH},
+                          value="1.0", type="number", step=0.1),
+                dcc.Input(id="initial-y", style={"width": INPUT_WIDTH},
+                          value="1.0",
+                          type="number", step=0.1),
+                dcc.Input(id="initial-z", style={"width": INPUT_WIDTH},
+                          value="1.0",
+                          type="number", step=0.1),
             ]),
+            html.Div(className="pr4 f3 b flex justify-between w-100", children=[
+                html.Div(className="nowrap", children="System B"),
+                daq.ToggleSwitch(
+                    color="#add8e6",
+                    id='toggle-sys-2',
+                    value=True,
+                )]),
+            html.Div(className="flex items-center pl2", children=[
+                html.Span(className="pr2 f5",
+                          children="Enabled:"),
+
+            ]),
+            html.Div("Initial point:"),
+            html.Div(className="nowrap", children=[
+                dcc.Input(style={"width": INPUT_WIDTH},
+                          value="1.0", type="number", disabled=True),
+                dcc.Input(style={"width": INPUT_WIDTH},
+                          value="1.0", type="number", disabled=True),
+                dcc.Input(style={"width": INPUT_WIDTH},
+                          value="1.0", type="number", disabled=True),
+            ]),
+
+            html.Div(className="flex f3", children=[
+                html.Span(className="b pr1",
+                          children=u"\u03C3" + ": "),
+                html.Span("10.0")
+            ]),
+
+            html.Div(className="flex f3", children=[
+                html.Span(className="b pr1",
+                          children=u"\u03C1" + ": "),
+                html.Span(id="rho")
+            ]),
+            dcc.Slider(
+                id='rho-slider',
+                min=lorenz.RHO_MIN,
+                max=lorenz.RHO_MAX,
+                value=lorenz.rho,
+                step=lorenz.RHO_STEP,
+            ),
+
+            html.Div(className="flex f4", children=[
+                html.Span(className="b pr1",
+                          children=u"\u03B2" + ": "),
+                html.Span(id="beta")
+            ]),
+            dcc.Slider(
+                id='beta-slider',
+                min=lorenz.BETA_MIN,
+                max=lorenz.BETA_MAX,
+                value=lorenz.beta,
+                step=lorenz.BETA_STEP,
+            ),
+
+        ]),
 
 
     ])
