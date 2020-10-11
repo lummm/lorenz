@@ -54,14 +54,15 @@ GRAPH = dcc.Graph(
 
 BLURB = html.Div(children=[
     html.Span(children=[
-        "These are solutions the system described by the",
-        html.Span(className="b", children="Lorenz equations:")
+        "These are solutions to the system described by the",
+        html.Span(className="b pl1", children="Lorenz equations:")
     ]),
-    html.Img(src=("https://wikimedia.org/api/rest_v1/media/math/render/svg/"
+    html.Img(className="bg-white",
+             src=("https://wikimedia.org/api/rest_v1/media/math/render/svg/"
                   "7928004d58943529a7be774575a62ca436a82a7f")),
 ])
 
-TOOLBAR_ITEMS = [
+TOOL_TOP = [
     html.Div(className="pr4 f3 b", children="System A"),
     html.Div("Initial point:"),
     html.Div(className="nowrap", children=[
@@ -123,14 +124,22 @@ TOOLBAR_ITEMS = [
         value=lorenz.beta,
         step=lorenz.BETA_STEP,
     ),
+]
 
+TOOL_BOTTOM = [
     BLURB,
+]
+
+TOOLBAR_ITEMS = [
+    html.Div(className="flex flex-column", children=TOOL_TOP),
+    html.Div(className="flex flex-column items-center pt3",
+             children=TOOL_BOTTOM),
 ]
 
 LAYOUT = html.Div(className="flex", children=[
     GRAPH,
     html.Div(
-        className="flex flex-column white",
+        className="flex flex-column white pa1",
         style={"width": "20vw", "backgroundColor": "#141414"},
         children=TOOLBAR_ITEMS),
 ])
