@@ -13,6 +13,7 @@ import lorenz
 
 
 INPUT_WIDTH = "50px"
+ROUTE_PREFIX = "/visual/"
 
 external_stylesheets = [
     # 'https://codepen.io/chriddyp/pen/bWLwgP.css',
@@ -135,15 +136,11 @@ LAYOUT = html.Div(className="flex", children=[
 ])
 
 
-def init() -> dash.Dash:
-    app = dash.Dash(__name__,
-                    external_stylesheets=external_stylesheets
-                    )
-    app.layout = LAYOUT
-    return app
-
-
-app = init()
+app = dash.Dash(__name__,
+                external_stylesheets=external_stylesheets,
+                routes_pathname_prefix=ROUTE_PREFIX,
+                )
+app.layout = LAYOUT
 server = app.server
 
 
@@ -195,7 +192,6 @@ def format_number(d):
      ]
 )
 def update_graph(rho, beta, show_sys_2, x, y, z):
-    print(f"rho: {rho}, beta: {beta}, toggle: {show_sys_2}")
     return gen_graph(rho, beta, show_sys_2, [x, y, z])
 
 
