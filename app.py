@@ -1,5 +1,7 @@
 #!/usr/bin/env python3.8
 
+import os
+
 import dash
 import dash_core_components as dcc
 import dash_daq as daq
@@ -12,8 +14,9 @@ import plotly.express as px
 import lorenz
 
 
+ROUTE_PREFIX = os.getenv("PREFIX")
+
 INPUT_WIDTH = "50px"
-ROUTE_PREFIX = "/visual/"
 
 external_stylesheets = [
     # 'https://codepen.io/chriddyp/pen/bWLwgP.css',
@@ -52,17 +55,18 @@ GRAPH = dcc.Graph(
         "width": "80vw",
     })
 
-BLURB = html.Div(children=[
-    html.Span(children=[
-        "These are solutions to the system described by the",
-        html.Span(className="b pl1", children="Lorenz equations:")
+BLURB = html.Div(className="w-100", children=[
+    html.Div(className="f3 tc", children="Solutions to the",),
+    html.Div(className="f3 b pl1 nowrap", children="Lorenz equations:"),
+    html.Div(className="w-100 flex justify-center pt2", children=[
+        html.Img(className="bg-white",
+                 src=("https://wikimedia.org/api/rest_v1/media"
+                      "/math/render/svg/"
+                      "7928004d58943529a7be774575a62ca436a82a7f")),
     ]),
-    html.Img(className="bg-white",
-             src=("https://wikimedia.org/api/rest_v1/media/math/render/svg/"
-                  "7928004d58943529a7be774575a62ca436a82a7f")),
 ])
 
-TOOL_TOP = [
+TOOL_BOTTOM = [
     html.Div(className="pr4 f3 b", children="System A"),
     html.Div("Initial point:"),
     html.Div(className="nowrap", children=[
@@ -76,8 +80,9 @@ TOOL_TOP = [
                   type="number", step=0.1),
     ]),
 
-    html.Div(className="pr4 f3 b flex justify-between w-100 pt4", children=[
-        html.Div(className="nowrap", children="System B"),
+    html.Div(className="pr4 flex justify-center f3 b w-100 pt4", children=[
+        html.Div(className="nowrap pr3",
+                 children="System B"),
         daq.ToggleSwitch(
             color="#add8e6",
             id='toggle-sys-2',
@@ -126,13 +131,13 @@ TOOL_TOP = [
     ),
 ]
 
-TOOL_BOTTOM = [
+TOOL_TOP = [
     BLURB,
 ]
 
 TOOLBAR_ITEMS = [
-    html.Div(className="flex flex-column", children=TOOL_TOP),
-    html.Div(className="flex flex-column items-center pt3",
+    html.Div(className="flex flex-column pt2", children=TOOL_TOP),
+    html.Div(className="flex flex-column items-center pt5",
              children=TOOL_BOTTOM),
 ]
 
@@ -147,7 +152,7 @@ LAYOUT = html.Div(className="flex", children=[
 
 app = dash.Dash(__name__,
                 external_stylesheets=external_stylesheets,
-                routes_pathname_prefix=ROUTE_PREFIX,
+                routes_pathname_prefix=f"/{ROUTE_PREFIX}/",
                 )
 app.layout = LAYOUT
 server = app.server
