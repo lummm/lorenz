@@ -50,10 +50,8 @@ plot_layout = {
 
 GRAPH = dcc.Graph(
     id="graph",
-    style={
-        "height": "100vh",
-        "width": "80vw",
-    })
+    className="h-100 w-100",
+)
 
 BLURB = html.Div(className="w-100", children=[
     html.Div(className="f3 tc", children="Solutions to the",),
@@ -141,13 +139,18 @@ TOOLBAR_ITEMS = [
              children=TOOL_BOTTOM),
 ]
 
-LAYOUT = html.Div(className="flex", children=[
-    GRAPH,
-    html.Div(
-        className="flex flex-column white pa1",
-        style={"width": "20vw", "backgroundColor": "#141414"},
-        children=TOOLBAR_ITEMS),
-])
+LAYOUT = html.Div(
+    className="flex flex-row-ns flex-column w-100 h-100",
+    style={"height": "100vh", "width": "100vw"},
+    children=[
+        html.Div(
+            className="w-80-ns h-100-ns h-80 w-100", children=[GRAPH]
+        ),
+        html.Div(
+            className="flex flex-column white pa1 w-20-ns h-100-ns w-100 h-20",
+            style={"backgroundColor": "#141414"},
+            children=TOOLBAR_ITEMS),
+    ])
 
 
 app = dash.Dash(__name__,
