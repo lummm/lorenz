@@ -1,5 +1,6 @@
 #!/usr/bin/env python3.8
 
+import logging
 import os
 
 import dash
@@ -14,12 +15,15 @@ import plotly.express as px
 import lorenz
 
 
+logging.basicConfig(level="INFO")
+
 ROUTE_PREFIX = os.getenv("PREFIX")
+ROUTE_PREFIX = f"/{ROUTE_PREFIX}/" if ROUTE_PREFIX else None
+logging.info("running with route prefix %s", ROUTE_PREFIX)
 
 INPUT_WIDTH = "50px"
 
 external_stylesheets = [
-    # 'https://codepen.io/chriddyp/pen/bWLwgP.css',
     "https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css",
 ]
 
@@ -189,7 +193,7 @@ LAYOUT = html.Div(
 
 app = dash.Dash(__name__,
                 external_stylesheets=external_stylesheets,
-                routes_pathname_prefix=f"/{ROUTE_PREFIX}/",
+                routes_pathname_prefix=ROUTE_PREFIX,
                 )
 app.layout = LAYOUT
 server = app.server
